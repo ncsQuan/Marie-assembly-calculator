@@ -1,0 +1,140 @@
+ORG		0
+/takes input
+Input
+Store D
+Output
+Input
+Store FIRST
+Output
+Input
+Store SECOND
+Output
+
+
+if,	LOAD D
+	Subt	ADD
+	SKIPCOND	400	/D=10
+	JUMP then
+	LOAD		FIRST
+	Add		SECOND
+	Store		ANSWER
+	LOAD		ANSWER
+	OUTPUT			/ OUTPUT value 
+
+then,	LOAD D
+	Subt	SUB
+	SKIPCOND	400	/D=11
+	JUMP next
+	LOAD		FIRST
+	Subt		SECOND
+	Store		ANSWER
+	LOAD		ANSWER
+	OUTPUT			/ OUTPUT value 
+
+
+next,	LOAD D
+	Subt	MULT
+	SKIPCOND	400	/D=12
+	JUMP last
+	LOAD	FIRST
+	Store	A
+	Loop,	LOAD	A
+		Subt	I
+		SKIPCOND	800	/is A>I
+		JUMP 	ma
+		LOAD 	A		/A++
+		Subt 	ONE
+		Store	A
+		Load	ANSWER
+		Add	SECOND
+		Store	ANSWER
+		Jump Loop
+		
+ma,	LOAD D
+	Subt	MULT
+	SKIPCOND	400	/D=12
+	JUMP end
+
+	LOAD	ANSWER
+	OUTPUT
+	
+last,	LOAD	D
+	Subt	DIV
+	SKIPCOND	400	/D=13
+	JUMP	end
+	
+	Load FIRST
+	Subt SECOND
+	Skipcond	000 // FIRST< SECOND
+	Jump idk
+	LOAD	ZERO
+	OUTPUT
+	LOAD	FIRST
+	OUTPUT
+	Halt
+	
+
+
+
+	
+idk,	LOAD	SECOND
+	Subt	ONE
+	Store	TEST
+	LOAD	FIRST
+	Store	A
+	Trap,	LOAD	A
+		Subt	ZERO
+		SKIPCOND	800	/is A>SECOND
+		JUMP	da	
+		LOAD	A
+		Subt	SECOND
+		Store	A
+		LOAD 	ANSWER
+		Add	ONE
+		Store	ANSWER
+		Jump	Trap
+		
+	
+
+
+da,	LOAD	A
+	Skipcond	400 // a=0
+	Jump de
+	LOAD ANSWER
+	
+	OUTPUT
+	LOAD	ZERO
+	OUTPUT
+	HALT
+	
+de,	LOAD	A
+	Subt	ZERO
+	Skipcond	000/A<0
+	Jump end
+	LOAD	A
+	Subt	ONE
+	OUTPUT
+	LOAD	A
+	OUTPUT
+
+
+end,	HALT			/ Fin
+
+
+/ variables
+NINE,	DEC		9
+H,	DEC		100
+ZERO,	DEC		0
+ONE,	DEC		1
+D,	DEC		0	/Discriminant
+FIRST,	DEC		0	/First variable in the equation
+SECOND,	DEC		0	/Second variable in the equation
+ANSWER,	DEC		0	/Output
+ADD,	DEC		10	/ADD KEY NUMBER
+SUB,	DEC		11	/Subtract key number
+MULT,	DEC		12	/Multiply key number
+A,	DEC		0	/ Place holder
+I,	DEC		0	/Multiplication variable
+DIV,	DEC		13	/Divide key number
+LEFT,	DEC		0	/Remainder
+TEST,	DEC		0
